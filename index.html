@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Aracaju - Sistema de Gerenciamento de Fliperamas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+    --primary-color: #ff0066;
+    --secondary-color: #00ccff;
+    --dark-color: #0d0221;
+    --light-color: #f8f9fa;
+    --accent-color: #ffcc00;
+    --success-color: #00ff88;
+    --text-dark: #1a1a2e; /* Nova cor para textos escuros com melhor contraste */
+}
+
+body {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    font-family: 'Roboto', sans-serif;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 0, 102, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(0, 204, 255, 0.1) 0%, transparent 20%);
+    min-height: 100vh;
+}
+
+.arcade-font {
+    font-family: 'Press Start 2P', cursive;
+}
+
+.navbar {
+    background-color: rgba(13, 2, 33, 0.9);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.navbar-brand {
+    color: var(--secondary-color) !important;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.2rem;
+}
+
+.nav-link {
+    color: var(--light-color) !important;
+    transition: all 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--accent-color) !important;
+    text-shadow: 0 0 5px var(--accent-color);
+}
+
+.section-title {
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 0, 102, 0.2);
+}
+
+.card-header {
+    background-color: rgba(255, 0, 102, 0.2);
+    border-bottom: 1px solid var(--primary-color);
+    font-weight: bold;
+    color: var(--light-color); /* Garantir que o texto do header seja claro */
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: bold;
+    color: white; /* Texto sempre branco para contraste */
+}
+
+.btn-primary:hover {
+    background-color: #e0005a;
+    border-color: #e0005a;
+    box-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+    color: white;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: var(--text-dark); /* Usando a nova cor para texto escuro */
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background-color: #00e077;
+    border-color: #00e077;
+    color: var(--text-dark);
+}
+
+.btn-warning {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-dark); /* Usando a nova cor para texto escuro */
+    font-weight: bold;
+}
+
+.btn-warning:hover {
+    background-color: #e6b800;
+    border-color: #e6b800;
+    color: var(--text-dark);
+}
+
+.btn-info {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-dark); /* Usando a nova cor para texto escuro */
+    font-weight: bold;
+}
+
+.btn-info:hover {
+    background-color: #00b8e6;
+    border-color: #00b8e6;
+    color: var(--text-dark);
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.status-disponivel {
+    background-color: var(--success-color);
+    color: var(--text-dark); /* Texto escuro para melhor contraste */
+}
+
+.status-locado {
+    background-color: var(--primary-color);
+    color: white; /* Texto branco para contraste com fundo rosa */
+}
+
+.status-cancelado {
+    background-color: #6c757d;
+    color: white; /* Texto branco para contraste com fundo cinza */
+}
+
+.table {
+    color: var(--light-color);
+}
+
+.table th {
+    border-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.table td {
+    border-color: rgba(255, 0, 102, 0.3);
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    color: var(--light-color);
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.25rem rgba(0, 204, 255, 0.25);
+    color: var(--light-color);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6); /* Placeholder com boa visibilidade */
+}
+
+.form-label {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.page-section {
+    display: none;
+}
+
+.active-section {
+    display: block;
+}
+
+.pixel-border {
+    border: 4px solid var(--primary-color);
+    border-image: 
+        linear-gradient(45deg, var(--primary-color), var(--secondary-color)) 1;
+    position: relative;
+}
+
+.pixel-border::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 2px solid var(--accent-color);
+    z-index: -1;
+}
+
+.fliperama-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.fliperama-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 0, 102, 0.1) 100%);
+    pointer-events: none;
+}
+
+.fliperama-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, var(--dark-color) 0%, #1a0b2e 100%);
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 0, 102, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 204, 255, 0.1) 0%, transparent 50%);
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.pixel-button {
+    position: relative;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white; /* Texto sempre branco para bom contraste */
+    border: none;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.pixel-button:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-dark); /* Texto escuro no hover para contraste com azul */
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+}
+
+.pixel-button::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px solid var(--accent-color);
+    z-index: -1;
+}
+
+footer {
+    background-color: rgba(13, 2, 33, 0.9);
+    border-top: 3px solid var(--primary-color);
+    padding: 20px 0;
+    margin-top: 50px;
+    color: var(--light-color);
+}
+
+/* Melhorias adicionais para contraste */
+.card-title {
+    color: var(--secondary-color);
+}
+
+.card-text {
+    color: var(--light-color);
+}
+
+.dropdown-menu {
+    background-color: var(--dark-color);
+    border: 1px solid var(--primary-color);
+}
+
+.dropdown-item {
+    color: var(--light-color);
+}
+
+.dropdown-item:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.pagination .page-link {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.pagination .page-link:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-dark);
+}
+
+/* Garantir que todos os textos em fundos coloridos tenham bom contraste */
+.btn-group .btn {
+    color: var(--text-dark) !important;
+}
+
+.btn-outline-secondary {
+    color: var(--light-color);
+    border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+ </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand arcade-font" href="#">ARCADE ARACAJU</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('home')">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('clientes')">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('fliperamas')">Fliperamas</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Relatórios
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="showSection('alugados')">Fliperamas Alugados</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showSection('cancelados')">Locações Canceladas</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="page-section active-section">
+        <div class="hero-section">
+            <div class="container hero-content">
+                <h1 class="arcade-font display-4 mb-4">ARCADE ARACAJU</h1>
+                <p class="lead mb-4">Sistema completo para gerenciamento de fliperamas e clientes</p>
+                <button class="pixel-button mb-3" onclick="showSection('clientes')">Gerenciar Clientes</button>
+                <button class="pixel-button mb-3" onclick="showSection('fliperamas')">Gerenciar Fliperamas</button>
+            </div>
+        </div>
+        
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h3 class="card-title arcade-font">Clientes</h3>
+                            <p class="card-text">Cadastre e gerencie os clientes do seu fliperama.</p>
+                            <button class="btn btn-primary" onclick="showSection('clientes')">Acessar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h3 class="card-title arcade-font">Fliperamas</h3>
+                            <p class="card-text">Controle o estoque e status dos fliperamas.</p>
+                            <button class="btn btn-primary" onclick="showSection('fliperamas')">Acessar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h3 class="card-title arcade-font">Relatórios</h3>
+                            <p class="card-text">Acompanhe fliperamas alugados e cancelamentos.</p>
+                            <div class="btn-group">
+                                <button class="btn btn-info" onclick="showSection('alugados')">Alugados</button>
+                                <button class="btn btn-warning" onclick="showSection('cancelados')">Cancelados</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clientes Section -->
+    <section id="clientes" class="page-section container my-5">
+        <h2 class="section-title arcade-font">Gerenciamento de Clientes</h2>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Cadastrar Novo Cliente</h4>
+            </div>
+            <div class="card-body">
+                <form id="clienteForm">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nome" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="telefone" class="form-label">Telefone</label>
+                            <input type="text" class="form-control" id="telefone" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Cadastrar Cliente</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Lista de Clientes</h4>
+                <div class="input-group" style="width: 300px;">
+                    <input type="text" class="form-control" id="buscarNomeInput" placeholder="Buscar por nome...">
+                    <button class="btn btn-outline-secondary" type="button" onclick="buscarClientesPorNome()">Buscar</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Telefone</th>
+                                <th>E-mail</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientesTable">
+                            <!-- Dados serão preenchidos via JavaScript -->
+                            <tr>
+                                <td colspan="5" class="text-center">Nenhum cliente cadastrado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Navegação de páginas">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Próxima</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fliperamas Section -->
+    <section id="fliperamas" class="page-section container my-5">
+        <h2 class="section-title arcade-font">Gerenciamento de Fliperamas</h2>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Cadastrar Novo Fliperama</h4>
+            </div>
+            <div class="card-body">
+                <form id="fliperamaForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="titulo" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="titulo" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="jogadores" class="form-label">Nº de Jogadores</label>
+                            <input type="number" class="form-control" id="jogadores" min="1" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="clienteId" class="form-label">Cliente</label>
+                            <select class="form-select" id="clienteId" required>
+                                <option value="">Selecione um cliente</option>
+                                <!-- Opções serão preenchidas via JavaScript -->
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="urlImagem" class="form-label">URL da Imagem</label>
+                            <input type="text" class="form-control" id="urlImagem">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="dataLocacao" class="form-label">Data de Locação</label>
+                            <input type="date" class="form-control" id="dataLocacao">
+                        </div>
+                       
+                        <div class="col-md-3 mb-3">
+                            <label for="valorAluguel" class="form-label">Valor do Aluguel (R$)</label>
+                            <input type="number" step="0.01" class="form-control" id="valorAluguel">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Cadastrar Fliperama</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Lista de Fliperamas</h4>
+            </div>
+            <div class="card-body">
+                <div class="row" id="fliperamasGrid">
+                    <!-- Cards de fliperamas serão preenchidos via JavaScript -->
+                    <div class="col-12 text-center">
+                        <p>Nenhum fliperama cadastrado</p>
+                    </div>
+                </div>
+                <nav aria-label="Navegação de páginas" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Próxima</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alugados Section -->
+    <section id="alugados" class="page-section container my-5">
+        <h2 class="section-title arcade-font">Fliperamas Alugados</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Cliente</th>
+                                <th>Data de Locação</th>
+                                <th>Valor do Aluguel</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alugadosTable">
+                            <!-- Dados serão preenchidos via JavaScript -->
+                            <tr>
+                                <td colspan="6" class="text-center">Nenhum fliperama alugado no momento</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cancelados Section -->
+    <section id="cancelados" class="page-section container my-5">
+        <h2 class="section-title arcade-font">Locações Canceladas</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Cliente</th>
+                                <th>Data de Cancelamento</th>
+                                <th>Valor do Aluguel</th>
+                            </tr>
+                        </thead>
+                        <tbody id="canceladosTable">
+                            <!-- Dados serão preenchidos via JavaScript -->
+                            <tr>
+                                <td colspan="5" class="text-center">Nenhuma locação cancelada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-4">
+        <div class="container">
+            <p class="mb-0 arcade-font">ARCADE ARACAJU &copy; 2025 - Sistema de Gerenciamento de Fliperamas</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript para navegação entre seções -->
+    <script>
+        function showSection(sectionId) {
+            // Esconde todas as seções
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+            
+            // Mostra a seção selecionada
+            document.getElementById(sectionId).classList.add('active-section');
+            
+            // Atualiza a navegação ativa
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Rola para o topo
+            window.scrollTo(0, 0);
+        }
+        
+        // Inicializa a página mostrando a seção home
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('home');
+        });
+    </script>
+
+    <script src="./script.js"></script>
+</body>
+</html>
