@@ -181,28 +181,6 @@ function atualizarPaginacao(data) {
     pagination.innerHTML = paginationHTML;
 }
 
-/*
-
-// Função para buscar clientes por nome
-async function buscarClientesPorNome(nome, pagina = 0) {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/clientes/buscarNome?nome=${encodeURIComponent(nome)}&page=${pagina}&size=10`
-        );
-        
-        if (!response.ok) {
-            throw new Error('Erro ao buscar clientes');
-        }
-
-        const data = await response.json();
-        preencherTabelaClientes(data.content);
-        atualizarPaginacao(data);
-    } catch (error) {
-        console.error('Erro:', error);
-        mostrarMensagem('Erro ao buscar clientes: ' + error.message, 'error');
-    }
-}
-*/
 // Função para verificar se a API está respondendo
 async function verificarConexaoAPI() {
     try {
