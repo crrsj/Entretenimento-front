@@ -550,8 +550,7 @@ async function cadastrarFliperama(fliperamaData) {
                 titulo: fliperamaData.titulo,
                 jogadores: fliperamaData.jogadores,
                 urlImagem: fliperamaData.urlImagem,
-                dataLocacao: fliperamaData.dataLocacao,
-          //      dataEntrega: fliperamaData.dataEntrega, // Campo adicionado
+                dataLocacao: fliperamaData.dataLocacao,         
                 valorAluguel: fliperamaData.valorAluguel
             })
         });
@@ -598,10 +597,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 titulo: document.getElementById('titulo').value.trim(),
                 jogadores: parseInt(document.getElementById('jogadores').value),
                 urlImagem: document.getElementById('urlImagem').value.trim(),
-                dataLocacao: document.getElementById('dataLocacao').value,
-              //  dataEntrega: document.getElementById('dataEntrega').value, // Campo adicionado
+                dataLocacao: document.getElementById('dataLocacao').value,            
                 valorAluguel: document.getElementById('valorAluguel').value ? 
-                    parseFloat(document.getElementById('valorAluguel').value) : null
+                parseFloat(document.getElementById('valorAluguel').value) : null
             };
 
             // Validação básica
@@ -888,7 +886,7 @@ async function alugarFliperama(id) {
         };
 
         const response = await fetch(`${API_BASE_URL}/fliperamas/locar/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -968,7 +966,7 @@ async function cancelarLocacao(id) {
         };
 
         const response = await fetch(`${API_BASE_URL}/fliperamas/cancelar/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
