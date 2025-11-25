@@ -886,7 +886,7 @@ async function alugarFliperama(id) {
         };
 
         const response = await fetch(`${API_BASE_URL}/fliperamas/locar/${id}`, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -966,7 +966,7 @@ async function cancelarLocacao(id) {
         };
 
         const response = await fetch(`${API_BASE_URL}/fliperamas/cancelar/${id}`, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
